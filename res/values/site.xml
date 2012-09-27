@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="site_url">http://faizvisram.com</string>
-    <string name="api_dir">/api</string>
+    <string name="api_dir">/api/</string>
     
 </resources>
