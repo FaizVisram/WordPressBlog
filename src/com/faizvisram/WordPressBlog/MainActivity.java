@@ -66,9 +66,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
         return true;
     }
 
-    
-
-    @Override
     public boolean onNavigationItemSelected(int position, long id) {
         // When the given tab is selected, show the tab contents in the container
         Fragment fragment = new DummySectionFragment();
