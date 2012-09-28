@@ -27,11 +27,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
     private static final String CATEGORY_RECENT = "CATEGORY_RECENT";
+    public static final String CATEGORY_ALL = "CATEGORY_ALL";
+    private static final String CATEGORY_ID_TOP = "0";
     
-    private List<Fragment> fragments = null;
-    private List<String> fragment_names = null;
     private Map<String, String> categories = null;
-    private String[] categories_keys = null;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,13 +42,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
         actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
-        fragments = new ArrayList<Fragment>();
-        fragment_names = new ArrayList<String>();
         categories = new HashMap<String, String>();
         
-        fragments.add(new PostsFragment());
-        fragment_names.add(this.getString(R.string.title_recent_posts));
-        categories.put(this.getString(R.string.title_recent_posts), CATEGORY_RECENT);
+        categories.put(this.getString(R.string.title_all_posts), CATEGORY_ALL);
         //categories_keys = (String[]) categories.keySet().toArray();
         
         refreshCategories(actionBar);
@@ -60,12 +55,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
     	WordPress.getCategories(this, new OnReturnListener() {
     		@Override
     		public void onReturn(ArrayList<Map<String, String>> result) {
-    			List<String> titles = new ArrayList<String>();
-				
     			for (Map<String, String> category : result) {
     				String title = category.get(WordPress.KEY_TITLE);
     				
-    				if (title != null) {
+    				if (title != null && CATEGORY_ID_TOP.equals(category.get(WordPress.KEY_PARENT))) {
     					categories.put(title, title);
     				}
     			}
@@ -77,12 +70,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 				});
     		}
     	});
-    	
-    	
 
+    	return;
     }
     
-    private void refreshCategories(final ActionBar actionBar) {
+    @SuppressWarnings("unchecked")
+	private void refreshCategories(final ActionBar actionBar) {
     	// Set up the dropdown list navigation in the action bar.
         actionBar.setListNavigationCallbacks(
                 // Specify a SpinnerAdapter to populate the dropdown list.
@@ -115,13 +108,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
     }
 
     public boolean onNavigationItemSelected(int position, long id) {
-        // TODO just get a new fragment
+        // When the given tab is selected, show the tab contents in the container
+    	PostsFragment fragment = new PostsFragment(this, WordPress.CATEGORY_ID_ALL);
     	
-    	// When the given tab is selected, show the tab contents in the container
-        Fragment fragment = fragments.get(position);
-        Bundle args = new Bundle();
-        args.putInt(PostsFragment.ARG_SECTION_NUMBER, position + 1);
-        //fragment.setArguments(args);
+    	Bundle args = new Bundle();
+        fragment.setArguments(args);
+        
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();
