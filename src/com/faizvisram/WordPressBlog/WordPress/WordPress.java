@@ -43,7 +43,7 @@ public class WordPress {
 					if (STATUS_OK.equals(item.get(KEY_STATUS))) {
 						String categoriesArray =  item.get(KEY_CATEGORIES);
 						
-						ArrayList<Map<String, String>> categories = ConnectionHandler.parseJsonArray(categoriesArray);
+						ArrayList<Map<String, String>> categories = JsonParser.parseArray(categoriesArray);
 						onReturnListener.onReturn(categories);
 						
 					}
@@ -63,7 +63,7 @@ public class WordPress {
 					if (STATUS_OK.equals(item.get(KEY_STATUS))) {
 						String categoriesArray =  item.get(KEY_POSTS);
 						
-						ArrayList<Map<String, String>> categories = ConnectionHandler.parseJsonArray(categoriesArray);
+						ArrayList<Map<String, String>> categories = JsonParser.parseArray(categoriesArray);
 						onReturnListener.onReturn(categories);	
 					}
 				}
