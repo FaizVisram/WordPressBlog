@@ -3,12 +3,25 @@
  */
 package com.faizvisram.WordPressBlog.WordPress;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Faiz Visram
  *
  */
 public class Author {
 
+	public static final String KEY_ID = "id";
+	public static final String KEY_SLUG = "slug";
+	public static final String KEY_NAME = "name";
+	public static final String KEY_FIRST_NAME = "first_name";
+	public static final String KEY_LAST_NAME = "last_name";
+	public static final String KEY_NICKNAME = "nickname";
+	public static final String KEY_URL = "url";
+	public static final String KEY_DESCRIPTION = "description";
+		
 	private String id = null;
 	private String slug = null;
 	private String firstName = null;
@@ -133,4 +146,29 @@ public class Author {
 		this.description = description;
 	}
 
+	public static Author parse(String json) {
+		return parse(JsonParser.parseObject(json));
+	}
+
+	public static Author parse(Map<String, String> rawAuthor) {
+		Author author = new Author();
+		
+		// TODO complete implementation
+		
+		return author;
+	}
+	
+	public static List<Author> parseArray(String json) {
+		List<Author> authors = new ArrayList<Author>();
+		List<Map<String, String>> rawAuthors = new ArrayList<Map<String, String>>();
+		
+		rawAuthors = JsonParser.parseArray(json);
+		
+		for (Map<String, String> rawCategory : rawAuthors) {
+			authors.add(parse(rawCategory));
+		}
+		
+		return authors;
+	}
+	
 }

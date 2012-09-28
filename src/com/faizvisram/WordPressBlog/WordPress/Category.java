@@ -3,6 +3,10 @@
  */
 package com.faizvisram.WordPressBlog.WordPress;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Faiz Visram
  *
@@ -118,4 +122,28 @@ public class Category {
 		this.postCount = postCount;
 	}
 
+	public static Category parse(String json) {
+		return parse(JsonParser.parseObject(json));
+	}
+
+	public static Category parse(Map<String, String> rawCategory) {
+		Category category = new Category();
+		
+		// TODO complete implementation
+		
+		return category;
+	}
+
+	public static List<Category> parseArray(String json) {
+		List<Category> categories = new ArrayList<Category>();
+		List<Map<String, String>> rawCategories = new ArrayList<Map<String, String>>();
+		
+		rawCategories = JsonParser.parseArray(json);
+		
+		for (Map<String, String> rawCategory : rawCategories) {
+			categories.add(parse(rawCategory));
+		}
+		
+		return categories;
+	}
 }
