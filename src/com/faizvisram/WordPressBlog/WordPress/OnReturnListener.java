@@ -10,9 +10,8 @@ import java.util.Map;
  * @author Faiz
  *
  */
-public class OnReturnListener {
+public abstract class OnReturnListener {
 
-	public void onReturn(ArrayList<Map<String, String>> result) {
-		
-	}
+	public abstract void onReturn(ArrayList<Map<String, String>> result);
+	
 }
