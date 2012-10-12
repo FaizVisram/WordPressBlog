@@ -17,6 +17,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -50,7 +51,11 @@ public class ConnectionHandler {
 	public static void execute(final Context context, final String api, final List<NameValuePair> params, final OnReturnListener onReturnListener) {
 		new Thread() {
 			public void run() {
-				final String apiUrl = context.getString(R.string.site_url) + context.getString(R.string.api_dir) + api;
+				String apiUrl = context.getString(R.string.site_url) + context.getString(R.string.api_dir) + api;
+
+				if (params != null) {
+				    apiUrl += "?" + URLEncodedUtils.format(params, "utf-8");
+				}
 				
 				InputStream is = null;
 				String json = "";
@@ -61,9 +66,6 @@ public class ConnectionHandler {
 					HttpClient httpClient = new DefaultHttpClient();
 				    HttpPost httpPost = new HttpPost(apiUrl);
 				    
-				    if (params != null) {
-				    	httpPost.setEntity(new UrlEncodedFormEntity(params));
-				    }
 				    
 				    HttpResponse response = httpClient.execute(httpPost);
 				    HttpEntity entity = response.getEntity();
