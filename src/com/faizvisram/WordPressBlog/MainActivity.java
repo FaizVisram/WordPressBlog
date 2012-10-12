@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,8 +27,6 @@ import com.faizvisram.WordPressBlog.WordPress.*;
 public class MainActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
 
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
-    private static final String CATEGORY_RECENT = "CATEGORY_RECENT";
-    public static final String CATEGORY_ALL = "CATEGORY_ALL";
     private static final String CATEGORY_ID_TOP = "0";
     
     private Map<String, String> categories = null;
@@ -44,9 +43,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 
         categories = new HashMap<String, String>();
         
-        categories.put(this.getString(R.string.title_all_posts), CATEGORY_ALL);
-        //categories_keys = (String[]) categories.keySet().toArray();
-        
+        categories.put(this.getString(R.string.title_all_posts), WordPress.CATEGORY_ID_ALL);
+
         refreshCategories(actionBar);
         getCategories();
     }
@@ -57,9 +55,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
     		public void onReturn(ArrayList<Map<String, String>> result) {
     			for (Map<String, String> category : result) {
     				String title = category.get(WordPress.KEY_TITLE);
+    				String id = category.get(WordPress.KEY_ID);
     				
     				if (title != null && CATEGORY_ID_TOP.equals(category.get(WordPress.KEY_PARENT))) {
-    					categories.put(title, title);
+    					categories.put(title, id);
     				}
     			}
     			
@@ -109,13 +108,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.OnNaviga
 
     public boolean onNavigationItemSelected(int position, long id) {
         // When the given tab is selected, show the tab contents in the container
-    	PostsFragment fragment = new PostsFragment(this, WordPress.CATEGORY_ID_ALL);
+    	String category = (String) categories.get(categories.keySet().toArray()[position]);
+    	
+    	PostsFragment fragment = new PostsFragment(this, category);
     	
     	Bundle args = new Bundle();
         fragment.setArguments(args);
         
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, fragment)
+                .replace(R.id.list_container, fragment)
                 .commit();
         return true;
     }
