@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import android.util.Log;
+
 /**
  * @author Faiz Visram
  *
@@ -24,6 +26,7 @@ public class Author {
 		
 	private String id = null;
 	private String slug = null;
+	private String name = null;
 	private String firstName = null;
 	private String lastName = null;
 	private String nickname = null;
@@ -74,6 +77,20 @@ public class Author {
 	 */
 	public void setSlug(String slug) {
 		this.slug = slug;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param nameame the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**
@@ -146,6 +163,66 @@ public class Author {
 		this.description = description;
 	}
 
+	/**
+	 * Deprecated.
+	 * @return
+	 */
+	private String getDisplayName() {
+		final String EMPTY_STRING = "";
+		String name = null;
+		
+		// Try Author's nickname
+		if ((name = this.getNickname()) != null && !name.trim().equals(EMPTY_STRING)) {
+			return name;
+		} 
+		
+		// Try Author's first and/or last names; whatever exists
+		String firstName = this.getFirstName();
+		String lastName = this.getLastName();
+		
+		if (firstName == null)
+			firstName = EMPTY_STRING;
+		if (lastName == null)
+			lastName = EMPTY_STRING;
+
+		name = (firstName + " " + lastName).trim();
+		
+		if (!name.equals(EMPTY_STRING))
+			return name;
+		
+		// Try Author's slug
+		if ((name = this.getSlug()) != null && !name.trim().equals(EMPTY_STRING)) {
+			return name;
+		} 
+
+		// Author has no String-type identity, return null
+		return null;
+			
+	}
+	
+	public String toString() {
+		String string = "";
+		
+		if (id != null)
+			string += id + " ";
+		if (slug != null)
+			string += slug + " ";
+		if (name != null)
+			string += name + " ";
+		if (firstName != null)
+			string += firstName + " ";
+		if (lastName != null)
+			string += lastName + " ";
+		if (nickname != null)
+			string += nickname + " ";
+		if (url != null)
+			string += url + " ";
+		if (description != null)
+			string += description + " ";
+				
+		return string;
+	}
+	
 	public static Author parse(String json) {
 		return parse(JsonParser.parseObject(json));
 	}
@@ -153,8 +230,15 @@ public class Author {
 	public static Author parse(Map<String, String> rawAuthor) {
 		Author author = new Author();
 		
-		// TODO complete implementation
-		
+		author.setId(rawAuthor.get(KEY_ID));
+		author.setSlug(rawAuthor.get(KEY_SLUG));
+		author.setName(rawAuthor.get(KEY_NAME));
+		author.setFirstName(rawAuthor.get(KEY_FIRST_NAME));
+		author.setLastName(rawAuthor.get(KEY_LAST_NAME));
+		author.setNickname(rawAuthor.get(KEY_NICKNAME));
+		author.setUrl(rawAuthor.get(KEY_URL));
+		author.setDescription(rawAuthor.get(KEY_DESCRIPTION));
+				
 		return author;
 	}
 	

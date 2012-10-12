@@ -6,9 +6,11 @@ package com.faizvisram.WordPressBlog;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.faizvisram.WordPressBlog.WordPress.Author;
 import com.faizvisram.WordPressBlog.WordPress.Post;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,17 +64,24 @@ public class PostAdapter extends BaseAdapter {
 	 * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
 	 */
 	public View getView(int index, View view, ViewGroup viewGroup) {
+		Post post = getItem(index);
+        Author author = post.getAuthor();
+        
 		// Inflate the view
 	    LayoutInflater li = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         view = li.inflate(android.R.layout.simple_list_item_2, null);
         TextView text1 = (TextView) view.findViewById(android.R.id.text1);
         TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-        Post post = getItem(index);
         
+        // Display the Post's title on the first line
         text1.setText(post.getTitle());
-        text2.setText(post.getAuthor().getNickname());
         
-		return view;
+        // Display the Author's name on the second line
+        if (author != null && author.getName() != null) {
+        	text2.setText(author.getName());
+        }
+		
+        return view;
 	}
 
 }
