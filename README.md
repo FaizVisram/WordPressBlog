@@ -3,7 +3,7 @@ WordPress Blog
 ===================
 
 ===================
-TABLE OF CONTENTS
+Table of Contents
 ===================
 1) Introduction
 2) Requirements
@@ -11,14 +11,14 @@ TABLE OF CONTENTS
 
 
 ===================
-1) INTRODUCTION
+1) Introduction
 ===================
 
 An Android app for WordPress blogs.
 
 
 ===================
-2) REQUIREMENTS
+2) Requirements
 ===================
 
 Requires the JSON API plugin to be installed and activated, which can be found here:
@@ -26,7 +26,7 @@ http://wordpress.org/extend/plugins/json-api/
 
 
 ===================
-3) SETUP
+3) Setup
 ===================
 
 To setup the app for your own website first edit site.xml in res>values>.
